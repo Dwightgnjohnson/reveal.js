@@ -166,6 +166,44 @@
 
             <p>A reset CSS file is like nuking and rebuilding, you have to add in all basic styling that you would normally get from the browser. A normalize CSS file provides just enough CSS to get all browsers working on a baseline and results in a much less cluttered view of your styles in an inspector.</p>
           </section>
+
+          <section data-markdown id="cross-browser-styling">
+            <script type="text/template">
+              ## Cross Browser Styling
+
+              Don’t keep IE CSS separate from other CSS. Better to keep it all together to better understand what’s going on. Use <code>html</code> tag classes.
+
+              ```
+              <!DOCTYPE html>
+              <!--[if IE 8]> <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+              <!--[if IE 9]> <html class="no-js ie9 oldie" lang="en"> <![endif]-->
+              <!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+              ```
+
+              ```
+              .selector {
+                /* styling... */
+              }
+                .ie8 .selector {
+                  /* custom IE8 styling */
+                }
+              ```
+            </script>
+          </section>
+
+          <section id="css-best-practices">
+            <h2>[My] CSS Best Practices</h2>
+
+            <p><i>Some of these could be debated</i></p>
+
+            <ul>
+              <li>Don’t nest selectors more than 3 deep</li>
+              <li>Name components with expressive classes</li>
+              <li>No IDs for styling.</li>
+              <li>Use a body class for page-specific styling</li>
+              <li>Use a preprocessor</li>
+            </ul>
+          </section>
         </section>
 
         <section>
