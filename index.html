@@ -145,6 +145,7 @@
               <li>Use a preprocessor</li>
               <li>Normalize not reset</li>
               <li>Cross-browser styling</li>
+              <li>Modernizr</li>
               <li>Best Practices</li>
             </ul>
           </section>
@@ -190,7 +191,9 @@
               ```
             </script>
           </section>
+        </section>
 
+        <section>
           <section id="css-best-practices">
             <h2>[My] CSS Best Practices</h2>
 
@@ -202,9 +205,270 @@
               <li>No IDs for styling.</li>
               <li>Use a body class for page-specific styling</li>
               <li>Use a preprocessor</li>
+              <li>Use classes heavily</li>
+            </ul>
+          </section>
+
+          <section data-markdown id="name-components">
+            <script type="text/template">
+              ## Components
+
+              ```
+              <aside class="quote">
+                <q class="quote__text">“This is a rocking presentation!”</q>
+                <cite class="quote__attribution">Matt Vanderpol</cite>
+              </aside>
+              ```
+            </script>
+          </section>
+
+          <section id="no-ids-in-css">
+            <h2>No IDs in CSS</h2>
+
+            <p>IDs are good for targeting elements with JavaScript but they’re too specific for CSS. You end up re-using them in odd places or going nuclear (<code>!important</code>).</p>
+          </section>
+
+          <section data-markdown id="body-class">
+            <script type="text/template">
+              ## Body Class
+
+              Use a body class for page-specific styling.
+
+              ```
+              <body class="solutions">
+              ...
+              </body>
+              ```
+            </script>
+          </section>
+        </section>
+
+
+        <section>
+          <section id="sass">
+            <h2>Sass - the “one true” Preprocessor</h2>
+
+            <p>I prefer Sass over Less because it seems more featureful/powerful and it’s easier to convert straight CSS to Scss-flavored Sass.</p>
+
+            <h3>Sass Features</h3>
+            <ul>
+              <li>Variables</li>
+              <li>Mixins</li>
+              <li>Functions</li>
+              <li>Image Sprites</li>
+              <li>Control Structures</li>
+            </ul>
+          </section>
+
+          <section data-markdown id="sass-variables">
+            <script type="text/template">
+              ### Variables
+
+              ```
+              $color-primary: #dedbef;
+              $color-accent: #133t34;
+              ```
+            </script>
+          </section>
+
+          <section id="sass-mixins">
+            <h2>Mixins</h2>
+            <pre><code data-trim>
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.container-with-floated-children {
+  @include clearfix;
+}
+            </code></pre>
+          </section>
+          <section data-markdown id="sass-functions">
+            <script type="text/template">
+              ### Functions
+
+              ```
+              @function fix-lineheight($fontsize, $lineheight) {
+                @if ($fontsize == 'auto') {
+                  @return $lineheight;
+                }
+                @if ($lineheight == $default-lineheight) {
+                  @return $fontsize * $lineheight-multiplier;
+                }
+                @return $lineheight;
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown id="sass-image-sprites">
+            <script type="text/template">
+              ## Image Sprites
+
+              ```
+              $icons-spacing: 2px; // for pixel-doubling
+
+              @import "compass/utilities/sprites";
+              @import "icons/*.png";
+
+              @mixin show-icon-sprite($name) {
+                @include ir;
+                @include icons-sprite($name);
+                width: icons-sprite-width($name);
+                height: icons-sprite-height($name);
+              }
+
+              .spoon {
+                @include show-icon-sprite(spoon);
+              }
+              ```
+            </script>
+          </section>
+          <section data-markdown id="sass-control-structures">
+            <script type="text/template">
+              ## Control Structures
+
+              ```
+              .social-media {
+                @include clearfix;
+                margin: 0 0 19px;
+
+                a {
+                  display: block;
+                }
+
+                @each $platform in facebook, twitter, linkedin, googleplus, youtube {
+                  .#{$platform} {
+                    @include show-icon-sprite($platform);
+                  }
+                }
+              }
+              ```
+            </script>
+          </section>
+        </section>
+
+        <section>
+          <section id="javascript">
+            <h2>JavaScript</h2>
+
+            <ul>
+              <li>Self-invoking Function</li>
+              <li>Basic Modules</li>
+              <li>jQuery (or Not)</li>
+              <li>Minify Code</li>
+            </ul>
+          </section>
+
+          <section data-markdown id="self-invoking-function">
+            <script type="text/template">
+              ## Self Invoking Function
+
+              ```
+              (function(window) {
+                var foo = 'foo';
+                window.fooAccessor = function() {
+                  return foo;
+                }
+              })(window);
+
+              console.log(fooAccessor()); // 'foo'
+              console.log(foo); // Error
+              ```
+            </script>
+          </section>
+
+          <section data-markdown id="basic-module">
+            <script type="text/template">
+              ## Basic Module
+
+              A pattern that I use a lot.
+
+              ```
+              (function($, undefined) {
+                var SomeModule = {
+                  init: function() {
+                    var $els = $('.selector')
+                    ;
+
+                    if ($els.length > 0) {
+                      SomeModule.setup($els);
+                    }
+                  },
+                  setup: function($els) {
+                    // Setup events and such
+                  }
+                };
+                $(SomeModule.init);
+              })(jQuery);
+              ```
+            </script>
+          </section>
+
+          <section id="jquery">
+            <h2>jQuery (or Not)</h2>
+
+            <p>Most projects I use jQuery served from Google cache to reap the benefits of distributed DNS and possible pre-caching. If a project is simple enough, jQuery might not be required. You could use <a href="http://youmightnotneedjquery.com">http://youmightnotneedjquery.com</a>.
+          </section>
+
+          <section id="minify-js">
+            <h2>Minify Code</h2>
+
+            <p>Minify with grunt</p>
+          </section>
+        </section>
+
+        <section>
+          <section id="grunt">
+            <h2>Grunt</h2>
+          </section>
+        </section>
+
+
+        <section>
+          <section id="images">
+            <h2>Images</h2>
+          </section>
+        </section>
+
+
+        <section id="server-config">
+          <h2>Server Config</h2>
+
+          <ul>
+            <li>Far futures expiration</li>
+            <li>gzip compression</li>
+          </ul>
+        </section>
+
+        <section id="performance">
+          <h2>Measuring Performance</h2>
+
+          <ul>
+            <li>YSlow</li>
+            <li>PageSpeed Insights</li>
+          </ul>
+        </section>
+
+        <section>
+          <section id="other-topics">
+            <h2>Other Topics</h2>
+
+            <ul>
+              <li>Polyfills</li>
+              <li>Retina Images</li>
+              <li>Responsive Design</li>
+              <li>Grid Layout</li>
+              <li>autoprefixr</li>
+              <li>Web Components</li>
             </ul>
           </section>
         </section>
+
+
 
         <section>
           <section id="further-reading">
@@ -213,16 +477,23 @@
             <p>A bunch of loosely organized links for further reading</p>
           </section>
 
-          <section id="css-maintenance">
-            <h2>CSS Maintenance</h2>
+          <section id="css-links">
+            <h2>CSS Links</h2>
 
             <ul>
               <li><a href="http://alistapart.com/article/css-audits-taking-stock-of-your-code">CSS Audits: Taking Stock of Your Code</a></li>
             </ul>
           </section>
 
-          <section id="bem">
-            <h2>BEM</h2>
+          <section id="sass-links">
+            <h2>Sass Links</h2>
+            <ul>
+              <li><a href="http://sass-lang.com">Sass: Syntactically Awesome Style Sheets</a></li>
+            </ul>
+          </section>
+
+          <section id="bem-links">
+            <h2>BEM Links</h2>
 
             <ul>
               <li><a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/">MindBEMding – getting your head ’round BEM syntax</a></li>
